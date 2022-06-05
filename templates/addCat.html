@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link
+      rel="shortcut icon"
+      href="../static/assets/images/favicon.png"
+      type="image/x-icon"
+    />
+    <title>Dashboard</title>
+    <!-- bootstrap core css -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../static/assets/css/bootstrap.css"
+    />
+    <!-- font awesome style -->
+    <link href="../static/assets/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="../static/assets/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="../static/assets/css/responsive.css" rel="stylesheet" />
+  </head>
+  <body class="sub_page">
+    <div class="hero_area">
+      <!-- header section strats -->
+      <header class="header_section">
+        <div class="container">
+          <nav class="navbar navbar-expand-lg custom_nav-container">
+            <a class="navbar-brand" href="/"
+              ><img width="250" src="../static/assets/images/logo.png" alt="#"
+            /></a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class=""> </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="/dashboard">Dashboard </a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </header>
+    </div>
+    <section class="inner_page_head">
+      <div class="container_fuild">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="full">
+              <h3>Admin Dashboard</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="ManageProducts" class="product_section layout_padding">
+      <div class="container">
+        <div class="heading_container heading_center">
+          <h2>Add <span>Product</span></h2>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="ProductID">Product ID</label>
+              <small id="IDHELP">
+                Products unique IDs are automatically generated.
+              </small>
+              <input
+                type="email"
+                name="productID"
+                class="form-control"
+                id="ProductID"
+                aria-describedby="IDHELP"
+                readonly
+                required
+              />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                name="name"
+                class="form-control"
+                id="name"
+                placeholder="Product name"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="desc">Description</label>
+            <textarea
+              type="text"
+              name="desc"
+              class="form-control"
+              id="desc"
+              placeholder="Description about the product"
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-secondary">Add</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- jQery -->
+    <script src="../static/assets/js/jquery-3.4.1.min.js"></script>
+    <!-- popper js -->
+    <script src="../static/assets/js/popper.min.js"></script>
+    <!-- bootstrap js -->
+    <script src="../static/assets/js/bootstrap.js"></script>
+    <!-- custom js -->
+    <script src="../static/assets/js/custom.js"></script>
+  </body>
+</html>

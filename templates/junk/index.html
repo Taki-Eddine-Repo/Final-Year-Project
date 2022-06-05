@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/assets/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../static/assets/css/custom.css">
+    <title>Shop</title>
+    <style>
+        nav.nav-center ul {
+            text-align: center;
+        }
+        nav.nav-center ul li {
+            display: inline;
+            float: none;
+        }
+        nav.nav-center ul li a {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <nav style="position:absolute;" class="transparent no-shadows nav-center">
+        <a href="#" class="black-text brand-logo left" style="">Echri</a>
+        <div class="nav-wrapper container center">
+          <ul id="nav-mobile" class="hide-on-med-and-down">
+            <li class="center"><a class='black-text'>Home</a></li>
+            <li class="center"><a class='black-text'>All items</a></li>
+            <li class="center"><a class='black-text dropdown-trigger' href="#" data-target='categories'><i class="material-icons right">arrow_drop_down</i>categories</a></li>
+            <li><a class='black-text'>
+                search 
+                <i class="material-icons right">search</i></a></li>
+            <li><a class='btn pink darken-4 white'>LOGIN</a></li>
+        </ul>
+            <!-- Dropdown Structure -->
+            <ul id='categories' class='dropdown-content'>
+              <li><a href="#!">one</a></li>
+              <li><a href="#!">two</a></li>
+              <li class="divider" tabindex="-1"></li>
+              <li><a href="#!">three</a></li>
+              <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+              <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+
+          </ul>
+        </div>
+    </nav>
+    <div class="pink accent-1" style="height: 100vh;">
+        <div class="carousel ">
+            <a class="carousel-item" href="#one!"><img src="../static/assets/img/apple-icon.png"></a>
+            <a class="carousel-item" href="#two!"><img src="../static/assets/img/banner_img_02.jpg"></a>
+            <a class="carousel-item" href="#three!"><img src="../static/assets/img/banner_img_02.jpg"></a>
+            <a class="carousel-item" href="#four!"><img src="../static/assets/img/banner_img_02.jpg"></a>
+            <a class="carousel-item" href="#five!"><img src="../static/assets/img/banner_img_02.jpg"></a>
+        </div>  
+    </div>
+    <script src="../static/assets/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            var instances = M.Dropdown.init(elems, {coverTrigger: false});
+            var car = document.querySelectorAll('.carousel');
+            var instances = M.Carousel.init(car);
+        });
+    </script>
+</body>
+</html>

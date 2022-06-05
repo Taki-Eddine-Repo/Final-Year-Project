@@ -1,0 +1,90 @@
+{%extends 'base.html'%} {%block title%}Signup{%endblock%} {%block
+class%}class="sub_page"{%endblock%} {%block main%}
+<section class="inner_page_head">
+  <div class="container_fuild">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="full">
+          <h3>Welcome aboard!</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="ManageProducts" class="product_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2>Signup <span>Up</span></h2>
+    </div>
+    <div class="container">
+      <form method="POST">
+        <div class="form-group">
+          <label for="firstname">First Name</label>
+          <input
+            type="text"
+            name="firstname"
+            class="form-control"
+            id="firstname"
+            aria-describedby="firstnamePriv"
+            placeholder="Enter first name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="lastname">Last Name</label>
+          <input
+            type="text"
+            name="lastname"
+            class="form-control"
+            id="lastname"
+            aria-describedby="lastnamePriv"
+            placeholder="Enter last name"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="text"
+            name="email"
+            class="form-control"
+            id="email"
+            placeholder="Enter email"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            name="username"
+            class="form-control"
+            id="username"
+            aria-describedby="usernamePriv"
+            placeholder="Enter username"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            id="password"
+            placeholder="Password"
+            required
+          />
+          {%if message%}
+          <small class="form-text alert alert-danger" role="alert"
+            >{{message}}</small
+          >
+          {%endif%}
+        </div>
+        <button type="submit" class="btn btn-primary">Sign me up</button>
+      </form>
+    </div>
+  </div>
+</section>
+{%endblock%}

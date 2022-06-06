@@ -484,9 +484,7 @@ def AddAdmin():
 def convert():
     points = request.form["points"]
     rec=Receveur.query.get(session.get("id"))
-    rec.points -= rec.points
-    demande = Demandes(UID=session.get("id"),points=points)
-    database.session.add(demande)
+    rec.points -= int(points)
     database.session.commit()
     return redirect('/dashboard')
 @app.route('/accessDenied')

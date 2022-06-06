@@ -60,13 +60,10 @@
                   >
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#ManageProducts">Manage products</a>
+                  <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#ManageRec">Manage les receveurs</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#ManageCat">Manage categories</a>
+                  <a class="nav-link" href="#convert">Converstion demand</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/logout">logout</a>
@@ -88,32 +85,19 @@
         </div>
       </div>
     </section>
+    {%if err%}
+    <h3>Your subscription has not been activate.</h3>
+    {%else%}
     <section id="ManageProducts" class="product_section layout_padding">
       <div class="container">
         <div class="heading_container heading_center">
-          <h2>Manage <span>Products</span></h2>
+          <h2>Manage <span>Links</span></h2>
         </div>
         <div class="row">
           {%for i in range(0, data|length)%} {%for j in range(0,
           data[i]|length)%}
           <div class="col-sm-6 col-md-4 col-lg-3">
             <div class="box">
-              <div class="option_container">
-                <div class="options">
-                  <a
-                    href="edit/product/{{data[i][j]['product'].PROID}}"
-                    class="option1"
-                  >
-                    Edit Product
-                  </a>
-                  <a
-                    href="delete/{{data[i][j]['product'].PROID}}"
-                    class="option2"
-                  >
-                    Delete product
-                  </a>
-                </div>
-              </div>
               <div class="img-box">
                 {%if data[i][j]['img']:%}
                 <img
@@ -124,19 +108,6 @@
                 <img src="../static/assets/images/p1.png" alt="" />
                 {%endif%}
               </div>
-              <div class="detail-box">
-                <h5>{{data[i][j]['product'].name}}</h5>
-                <h6>{{data[i][j]['product'].price}}DZA</h6>
-              </div>
-            </div>
-          </div>
-          {%endfor%} {%endfor%}
-          <!--l'ajout ta3 un produit fixed tjrs hna-->
-          <div class="col-sm-6 col-md-4 col-lg-3">
-            <div class="box">
-              <div class="img-box">
-                <img src="../static/assets/images/plus.svg" alt="" />
-              </div>
               <div
                 class="detail-box"
                 style="
@@ -145,13 +116,18 @@
                   align-items: center;
                 "
               >
-                <a href="/add"><h5>Add an item</h5></a>
+                <a href="/checkout/{{rec.UID}}/{{data[i][j]['product'].PROID}}"
+                  ><h5>link</h5></a
+                >
               </div>
             </div>
           </div>
+          {%endfor%} {%endfor%}
+          <!--l'ajout ta3 un produit fixed tjrs hna-->
         </div>
       </div>
     </section>
+    {%endif%}
     <section
       id="ManageRec"
       class="product_section layout_padding"
@@ -159,97 +135,27 @@
     >
       <div class="container">
         <div class="heading_container heading_center">
-          <h2>Manage Receveurs</h2>
+          <h2>Demande Converstion</h2>
         </div>
         <div class="row">
-          {%for rece in rec%}
           <div class="col-sm-6 col-md-4 col-lg-3">
             <div class="box">
-              <div class="option_container">
-                <div class="options">
-                  <a href="edit/receveur/{{rece.UID}}" class="option1">
-                    Edit Receveur
-                  </a>
-                  <a href="delete/receveur/{{rece.UID}}" class="option2">
-                    Delete Receveur
-                  </a>
-                </div>
-              </div>
               <div class="detail-box" style="flex-direction: column">
-                <h5>Unique ID:</h5>
-                <p>{{rece.UID}}</p>
-                <h5>Points:</h5>
-                <p>{{rece.points}}</p>
-                <h5>Sales:</h5>
-                <p>{{rece.sales}}</p>
-              </div>
-            </div>
-          </div>
-          {%endfor%}
-          <div class="col-sm-6 col-md-4 col-lg-3">
-            <div class="box">
-              <div class="img-box">
-                <img
-                  src="{{url_for('static', filename='assets/images/table.png')}}"
-                  alt=""
-                />
-              </div>
-              <div
-                class="detail-box"
-                style="
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                "
-              >
-                <a href="/viewTable"><h5>More Details</h5></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section id="ManageCat" class="product_section layout_padding">
-      <div class="container">
-        <div class="heading_container heading_center">
-          <h2>Manage <span>Categories</span></h2>
-        </div>
-        <div class="row">
-          {%for category in categories%}
-          <div class="col-sm-6 col-md-4 col-lg-3">
-            <div class="box">
-              <div class="option_container">
-                <div class="options">
-                  <a href="edit/category/{{category.CATID}}" class="option1">
-                    Edit Category
-                  </a>
-                  <a href="delete/category/{{category.CATID}}" class="option2">
-                    Delete Category
-                  </a>
-                </div>
-              </div>
-              <div class="detail-box" style="flex-direction: column">
-                <h5>{{category.name}}</h5>
-                <p>{{category.description}}</p>
-              </div>
-            </div>
-          </div>
-          {%endfor%}
-          <!--l'ajout ta3 un produit fixed tjrs hna-->
-          <div class="col-sm-6 col-md-4 col-lg-3">
-            <div class="box">
-              <div class="img-box">
-                <img src="../static/assets/images/plus.svg" alt="" />
-              </div>
-              <div
-                class="detail-box"
-                style="
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                "
-              >
-                <a href="/add/category"><h5>Add a category</h5></a>
+                <form method="POST" action="/convertPoints">
+                  <div class="slidecontainer">
+                    <input
+                      type="range"
+                      min="0"
+                      max="{{rec.points}}"
+                      value="0"
+                      class="slider"
+                      id="points"
+                      name="points"
+                    />
+                  </div>
+                  <p>Value: <span id="value"></span></p>
+                  <button>Convert</button>
+                </form>
               </div>
             </div>
           </div>
@@ -264,5 +170,15 @@
     <script src="../static/assets/js/bootstrap.js"></script>
     <!-- custom js -->
     <script src="../static/assets/js/custom.js"></script>
+    <script>
+      var slider = document.getElementById("points");
+      var output = document.getElementById("value");
+      output.innerHTML = slider.value; // Display the default slider value
+
+      // Update the current slider value (each time you drag the slider handle)
+      slider.oninput = function () {
+        output.innerHTML = this.value;
+      };
+    </script>
   </body>
 </html>

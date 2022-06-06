@@ -1,0 +1,48 @@
+{%extends 'base.html'%} {%block title%}Home{%endblock%} {%block
+class%}class='sub_page'{%endblock%} {%block main%}
+
+<section class="inner_page_head">
+  <div class="container_fuild">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="full">
+          <h3>Admin Dashboard</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="ManageProducts" class="product_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2>Table <span>View</span></h2>
+    </div>
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">first name</th>
+          <th scope="col">last name</th>
+          <th scope="col">username</th>
+          <th scope="col">email</th>
+          <th scope="col">points</th>
+          <th scope="col">sales</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%for reces in data%} {%for user in reces%}
+        <tr>
+          <th scope="row">{{user["user"].UID}}</th>
+          <td>{{user["user"].firstname}}</td>
+          <td>{{user["user"].lastname}}</td>
+          <td>{{user["user"].username}}</td>
+          <td>{{user["user"].email}}</td>
+          <td>{{user["rec"].points}}</td>
+          <td>{{user["rec"].sales}}</td>
+        </tr>
+        {%endfor%} {%endfor%}
+      </tbody>
+    </table>
+  </div>
+</section>
+{%endblock%}

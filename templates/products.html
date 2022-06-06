@@ -33,7 +33,8 @@ class%}class="sub_page"{%endblock%} {%block main%}
           </div>
           <div class="img-box">
             <img
-              src="../static/assets/images/uploads/{{item['img'][0].img}}"
+              src="{{url_for('static', filename='assets/images/uploads/' +
+            item['img'][0].img)}}"
               alt=""
             />
           </div>

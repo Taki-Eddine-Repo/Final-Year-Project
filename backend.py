@@ -1,3 +1,5 @@
+from math import prod
+from unicodedata import category
 from flask import Flask, render_template, request, session, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -6,16 +8,11 @@ import os
 import random
 import string
 """
-Here's What To Do:
-
-1- Write the database structure DRAW it if necessary
-2- Create classes models.
-3- Run the models to create the tables
-4- Write the login logic for the administrator
-5- Write the login logic for the receiver
-6- Write the administrator page's frontend
-7- Write the receuver page's frontened
-8- Write the database queries
+TO DO:
+- ALL THE VIEW(VIEW RECEVEUR)
+- ALL THE EDITS (EDIT PRODUCT, CATEGORY)
+- LINKS TO THE RECEVEURS
+- ACTIVATE RECEVEURS
 
 """
 
@@ -78,7 +75,17 @@ class Receveur(database.Model):
 
     def __repr__(self):
         return '<Receveur %r>' % self.UID
+        
+class Demandes(database.Model):
+    DID = database.Column(database.Integer, primary_key=True)
+    UID = database.Column(database.Integer, database.ForeignKey(
+        "users.UID"), primary_key=True, autoincrement=False)
+    points = database.Column(database.Integer, nullable=False)
+    sales = database.Column(database.Integer, nullable=False)
+    active = database.Column(database.Integer, nullable=False)
 
+    def __repr__(self):
+        return '<Receveur %r>' % self.UID
 
 class Proimgs(database.Model):
     IMGID = database.Column(
@@ -126,7 +133,6 @@ def products():
     for product in products:
         imgs = Proimgs.query.filter(Proimgs.PROID == product.PROID).all()
         data.append([{"product": product, "img": imgs}])
-        print(data, '\n')
     return render_template('products.html', data=data)
 
 
@@ -162,7 +168,21 @@ def admin():
     if (session.get("id") is None):
         return redirect('/login')
     if (not check_admin(session.get("id"))):
-        return render_template("WRONGPAGEYO.html")
+        recInfo = Receveur.query.get(session.get("id"))
+        if recInfo.active == 0:
+            return render_template('recDashboard.html', err="0")
+
+        products = Products.query.all()
+        if products is not None:
+            data = []
+            recInfo = Receveur.query.get(session.get("id"))
+            for product in products:
+                imgs = Proimgs.query.filter(
+                    Proimgs.PROID == product.PROID).all()
+                data.append([{"product": product, "img": imgs}])
+            return render_template('recDashboard.html', data=data, rec=recInfo)
+        else:
+            return render_template('recDashboard.html')
     products = Products.query.all()
     if products is not None:
         data = []
@@ -178,6 +198,77 @@ def admin():
         categories = Categories.query.all()
         rec = Receveur.query.all()
         return render_template('dashboard.html', data=None, rec=rec, categories=categories)
+@app.route('/view/category/<int:id>')
+def viewCat(id):
+    category = Categories.query.get_or_404(id)
+    data=[]
+    if category:
+        products = Products.query.filter(Products.CATID == category.CATID).all()
+        for product in products:
+            imgs = Proimgs.query.filter(Proimgs.PROID == product.PROID).all()
+            data.append([{"product": product, "img": imgs}])
+    return render_template('products.html', data=data)
+
+@app.route('/viewTable')
+def viewTAB():
+    if (session.get("id") is None or not check_admin(session.get("id"))):
+        return redirect('/accessDenied')
+    data = []
+    recs = Receveur.query.all()
+    for rec in recs:
+        user = Users.query.get(rec.UID)
+        data.append([{"user": user, "rec": rec}])
+        print(data)
+    return render_template('viewTable.html', data=data)
+
+@app.route('/edit/category/<int:id>', methods=["POST", "GET"])
+def editCat(id):
+    if (session.get("id") is None or not check_admin(session.get("id"))):
+        return redirect('/accessDenied')
+    category = Categories.query.get_or_404(id)
+    if request.method=="POST":
+        category.name = request.form["name"]
+        category.description = request.form["desc"]
+        database.session.commit()
+        return redirect('/dashboard')
+    return render_template('editCat.html', data=category)
+
+@app.route('/edit/receveur/<int:id>', methods=["POST", "GET"])
+def editRec(id):
+    if (session.get("id") is None or not check_admin(session.get("id"))):
+        return redirect('/accessDenied')
+    Rec = Receveur.query.get_or_404(id)
+    User = Users.query.get(id)
+    data = {"rec": Rec, "user": User}
+    if request.method=="POST":
+        User.firstname = request.form["firstname"]
+        User.lastname = request.form["lastname"]
+        User.email = request.form["email"]
+        User.password = request.form["password"]
+        Rec.points = request.form["points"]
+        Rec.sales = request.form["sales"]
+        Rec.active = request.form["activation"]
+        database.session.commit()
+        return redirect('/dashboard')
+    return render_template('editRec.html', data=data)
+
+@app.route('/edit/product/<int:id>', methods=["POST", "GET"])
+def editPROD(id):
+    if (session.get("id") is None or not check_admin(session.get("id"))):
+        return redirect('/accessDenied')
+    product = Products.query.get_or_404(id)
+    categories = Categories.query.filter(Categories.CATID!=product.CATID).all()
+    category = Categories.query.get(product.CATID)
+    if request.method=="POST":
+        product.name = request.form["productName"]
+        product.description = request.form["productDesc"]
+        product.price = request.form["price"]
+        product.CATID = request.form["category"]
+        product.shippingFee = request.form["fee"]
+        database.session.commit()
+        return redirect('/dashboard')
+    data = {"product": product, "categories": categories, "PROCAT": category}
+    return render_template('editPROD.html', data=data)
 
 
 @app.route('/add', methods=['POST', 'GET'])
@@ -223,6 +314,9 @@ def addproduct():
         return render_template('addProduct.html', categories=categories)
 
 
+    
+
+
 @app.route('/add/category', methods=['POST', 'GET'])
 def addCat():
     if session.get("id"):
@@ -262,7 +356,17 @@ def deleteCat(id):
         return redirect('/dashboard')
     except:
         return 'There was a problem deleting.'
-
+@app.route('/delete/receveur/<int:id>', methods=['POST', 'GET'])
+def deleteRec(id):
+    rec = Receveur.query.get_or_404(id)
+    user = Users.query.get_or_404(id)
+    try:
+        database.session.delete(rec)
+        database.session.delete(user)
+        database.session.commit()
+        return redirect('/dashboard')
+    except:
+        return 'There was a problem deleting.'
 
 @app.route('/logout')
 def logout():
@@ -279,9 +383,7 @@ def notFound():
 @app.route('/login', methods=["POST", "GET"])
 def login():
     if session.get("id"):
-        if (check_admin(session.get('id'))):
-            return redirect('/dashboard')
-        return redirect('/')
+        return redirect('/dashboard')
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
@@ -289,11 +391,8 @@ def login():
         if user:
             if password == user.password:
                 session["id"] = user.UID
-                is_admin = check_admin(user.UID)
-                if is_admin:
-                    return redirect('dashboard')
-                else:
-                    return redirect('/receiver')
+                return redirect('dashboard')
+
             else:
                 return render_template('login.html', message="Wrong password!")
         else:
@@ -326,11 +425,48 @@ def signup():
     return render_template('signup.html')
 
 
-@app.route('/checkout')
-def checkout():
-    return render_template('checkout.html')
+@app.route('/checkout/<int:PROID>')
+def checkout(PROID):
+    product = Products.query.get(PROID)
+    if product is not None:
+        category = Categories.query.get(product.CATID)
+        imgs = Proimgs.query.filter(Proimgs.PROID == product.PROID).all()
+        data = {
+            "category": category,
+            "product": product,
+            "img": imgs
+        }
+        #data= jsonify(data)
+        return render_template('checkout.html', data=data)
+    else:
+        return redirect('/404')
 
 
+@app.route('/thankyou')
+def thankyou():
+    return render_template('thankyou.html')
+@app.route('/checkout/<int:UID>/<int:PROID>', methods=['POST', 'GET'])
+def link(UID, PROID):
+    if session.get("id"):
+        if Receveur.query.get(session.get("id")) is not None:
+            return "NOT ALLOWED TO ADD POINTS TO YOURSELF"
+    if request.method == "POST":
+        rec = Receveur.query.get(UID)
+        rec.points = rec.points + 1
+        rec.sales = rec.sales + 1
+        database.session.commit()
+        return redirect('/thankyou')
+    product = Products.query.get(PROID)
+    if product is not None:
+        category = Categories.query.get(product.CATID)
+        imgs = Proimgs.query.filter(Proimgs.PROID == product.PROID).all()
+        data = {
+            "category": category,
+            "product": product,
+            "img": imgs
+        }
+        return render_template('checkoutSpec.html', data=data)
+    
 @app.route('/INIT')
 def AddAdmin():
     if (Admin.query.get(1) and Users.query.filter(Users.username == "admin").first()):
@@ -344,6 +480,17 @@ def AddAdmin():
         database.session.commit()
         return "THERE WAS AN ERROR IN THE PREVIOUS INITIALIZATION OR THIS IS THE FIRST TIME INITIALIZING."
 
-
+@app.route('/convertPoints', methods=["POST"])
+def convert():
+    points = request.form["points"]
+    rec=Receveur.query.get(session.get("id"))
+    rec.points -= rec.points
+    demande = Demandes(UID=session.get("id"),points=points)
+    database.session.add(demande)
+    database.session.commit()
+    return redirect('/dashboard')
+@app.route('/accessDenied')
+def denied():
+    return render_template('NO.html')
 if __name__ == "__main__":
     app.run(debug=True)

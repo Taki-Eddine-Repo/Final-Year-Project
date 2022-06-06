@@ -1,0 +1,106 @@
+{%extends 'base.html'%} {%block title%}Edit Receveur{%endblock%} {%block
+class%}class="sub_page"{%endblock%} {%block main%}
+<section class="inner_page_head">
+  <div class="container_fuild">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="full">
+          <h3>Admin dashboard</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="ManageProducts" class="product_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2>Edit <span>Receveur</span></h2>
+    </div>
+    <div class="container">
+      <form method="POST" enctype="multipart/form-data">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="ProductID">Product ID</label>
+            <small id="IDHELP">
+              Products unique IDs are automatically generated.
+            </small>
+            <input
+              type="email"
+              name="productID"
+              class="form-control"
+              id="ProductID"
+              aria-describedby="IDHELP"
+              value="{{data['product'].PROID}}"
+              readonly
+              required
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="productName">Name</label>
+            <input
+              type="text"
+              name="productName"
+              class="form-control"
+              id="productName"
+              placeholder="Product name"
+              value="{{data['product'].name}}"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="productDesc">Description</label>
+          <textarea
+            type="text"
+            name="productDesc"
+            class="form-control"
+            id="productDesc"
+            placeholder="Description about the product"
+            required
+          >
+{{data['product'].description}}</textarea
+          >
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="price">Price</label>
+            <input
+              type="number"
+              class="form-control"
+              id="price"
+              name="price"
+              placeholder="Price per item"
+              value="{{data['product'].price}}"
+              required
+            />
+          </div>
+          <div class="form-group col-md-4">
+            <label for="Categories">Category</label>
+            <select name="category" id="Categories" class="form-control">
+              <option value="{{data['PROCAT'].CATID}}" selected>
+                {{data['PROCAT'].name}}
+              </option>
+              {%for category in data["categories"]%}
+              <option value="{{category.CATID}}">{{category.name}}</option>
+              {%endfor%}
+            </select>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="fee">Shipping Fee</label>
+            <input
+              type="number"
+              name="fee"
+              class="form-control"
+              id="fee"
+              placeholder="shipping fee"
+              value="{{data['product'].shippingFee}}"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-secondary">Edit</button>
+      </form>
+    </div>
+  </div>
+</section>
+{%endblock%}

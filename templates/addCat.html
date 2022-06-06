@@ -77,17 +77,17 @@
     <section id="ManageProducts" class="product_section layout_padding">
       <div class="container">
         <div class="heading_container heading_center">
-          <h2>Add <span>Product</span></h2>
+          <h2>Add <span>Category</span></h2>
         </div>
         <form method="POST" enctype="multipart/form-data">
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="ProductID">Product ID</label>
+              <label for="CatID">Category ID</label>
               <small id="IDHELP">
                 Products unique IDs are automatically generated.
               </small>
               <input
-                type="email"
+                type="text"
                 name="productID"
                 class="form-control"
                 id="ProductID"
@@ -97,19 +97,19 @@
               />
             </div>
             <div class="form-group col-md-6">
-              <label for="name">Name</label>
+              <label for="name">Category Name:</label>
               <input
                 type="text"
                 name="name"
                 class="form-control"
                 id="name"
-                placeholder="Product name"
+                placeholder="Category name"
                 required
               />
             </div>
           </div>
           <div class="form-group">
-            <label for="desc">Description</label>
+            <label for="desc">Category description:</label>
             <textarea
               type="text"
               name="desc"
